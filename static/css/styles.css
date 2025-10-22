@@ -1,0 +1,340 @@
+/* ==========================
+   Base & Custom App Styles
+   ========================== */
+
+/* --- Body & General --- */
+body {
+  font-size: 1.25rem; /* Base font size */
+  font-family: 'Open Sans', sans-serif; /* Primary font */
+  color: #ffffff; /* Default text color (can be overridden) */
+
+  /* --- Background Image --- */
+  background-image: url('../assets/img/home-bg.jpeg'); /* Correct relative path */
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center center;
+  background-repeat: no-repeat;
+  /* Removed background-color to avoid conflicts */
+}
+
+/* Ensure links are generally readable */
+a {
+  color: #a3d1ff;
+}
+a:hover {
+  color: #fdfdfd;
+}
+
+/* --- Navigation Bar --- */
+#mainNav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1030;
+  background-color: transparent; /* Start transparent */
+  font-family: "Open Sans", sans-serif;
+  transition: background-color 0.2s ease-in-out;
+}
+#mainNav .navbar-brand {
+  font-weight: 800;
+  color: #fff; /* White initially */
+}
+#mainNav .navbar-toggler {
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 0.75rem;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+#mainNav .navbar-nav > li.nav-item > a.nav-link,
+#mainNav .navbar-nav > li.nav-item > span.nav-link {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.0625em;
+  text-transform: uppercase;
+  color: #fff; /* White initially */
+}
+#mainNav .navbar-brand:focus, #mainNav .navbar-brand:hover,
+#mainNav .navbar-nav > li.nav-item > a.nav-link:focus,
+#mainNav .navbar-nav > li.nav-item > a.nav-link:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Sticky/Fixed Nav Behavior */
+@media (min-width: 992px) {
+  #mainNav {
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+  #mainNav.is-fixed {
+    position: fixed;
+    top: -83px; /* Adjust if your nav height is different */
+    transition: transform 0.2s;
+    border-bottom: 1px solid #dee2e6; /* Light border when fixed */
+    background-color: rgba(255, 255, 255, 0.95); /* Slightly opaque white */
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    z-index: 1031;
+  }
+  #mainNav.is-fixed .navbar-brand {
+    color: #212529; /* Dark text */
+  }
+  #mainNav.is-fixed .navbar-nav > li.nav-item > a.nav-link,
+  #mainNav.is-fixed .navbar-nav > li.nav-item > span.nav-link {
+    color: #212529; /* Dark text */
+  }
+  #mainNav.is-fixed .navbar-brand:focus, #mainNav.is-fixed .navbar-brand:hover,
+  #mainNav.is-fixed .navbar-nav > li.nav-item > a.nav-link:focus,
+  #mainNav.is-fixed .navbar-nav > li.nav-item > a.nav-link:hover {
+    color: #0085A1; /* Primary color */
+  }
+  #mainNav.is-visible {
+    transform: translate3d(0, 100%, 0);
+  }
+}
+
+/* --- Header Section (Masthead) --- */
+header.masthead {
+  position: relative;
+  margin-bottom: 0;
+  padding-top: 8rem;
+  padding-bottom: 4rem;
+  background-color: transparent; /* Rely on body background */
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+header.masthead:before { /* Overlay */
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(33, 37, 41, 0.4); /* Dark overlay */
+}
+header.masthead .site-heading {
+  color: #fff;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+header.masthead .site-heading h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+}
+header.masthead .site-heading .subheading {
+  font-size: 1.2rem;
+  font-weight: 300;
+  line-height: 1.1;
+  display: block;
+  margin-top: 0.625rem;
+}
+@media (min-width: 992px) {
+  header.masthead {
+      padding-top: 10rem;
+      padding-bottom: 6rem;
+  }
+   header.masthead .site-heading h1 {
+      font-size: 4rem;
+  }
+   header.masthead .site-heading .subheading {
+      font-size: 1.5rem;
+  }
+}
+
+/* --- Main Content Area --- */
+.container.py-5 {
+  /* Optional subtle background */
+  /* background-color: rgba(255, 255, 255, 0.05); */
+  /* backdrop-filter: blur(2px); */
+  /* -webkit-backdrop-filter: blur(2px); */
+  /* border-radius: 8px; */
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* --- Glassmorphism Card Style (Weather Cards) --- */
+.weather-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.1);
+    color: #ffffff;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    overflow: hidden;
+}
+.weather-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 8px 30px 0 rgba(0, 0, 0, 0.15);
+}
+.card-link { /* For clickable cards */
+    text-decoration: none;
+    color: inherit;
+}
+.card-link:hover {
+     color: inherit;
+}
+.weather-card .card-body {
+    position: relative;
+    z-index: 2;
+}
+.weather-card .card-title {
+    font-weight: 600;
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+}
+.weather-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0.5rem auto;
+    filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.3));
+}
+.weather-card .temp {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin: 0.5rem 0;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+}
+.weather-card .description {
+    font-size: 1rem;
+    text-transform: capitalize;
+    font-style: italic;
+    opacity: 0.9;
+}
+
+/* --- Detail Card Styles --- */
+.weather-card-detail {
+     background: rgba(0, 0, 0, 0.2);
+     backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+    color: #ffffff;
+    padding: 25px;
+}
+.weather-card-detail .card-body {
+     position: relative;
+     z-index: 2;
+}
+.weather-icon-large {
+    width: 120px;
+    height: 120px;
+    filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.4));
+}
+.temp-large {
+    font-size: 3.8rem;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+.description-large {
+    font-size: 1.4rem;
+    font-style: italic;
+    opacity: 0.9;
+}
+.weather-card-detail .btn-outline-secondary {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+.weather-card-detail .btn-outline-secondary:hover {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: #fff;
+}
+
+/* --- Form Styling (Login/Register) --- */
+main .card.p-4.shadow-sm { /* Target form cards specifically */
+    background: rgba(255, 255, 255, 0.15); /* Glass effect */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 15px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+}
+/* Form labels */
+main .card.p-4.shadow-sm label {
+  color: #f8f9fa; /* Lighter color for labels */
+  font-weight: 500;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.4); /* Shadow for readability */
+}
+/* Form H2 heading */
+main .card.p-4.shadow-sm h2 {
+    color: #ffffff; /* White heading */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); /* Shadow */
+}
+/* Form paragraph text and links ("Don't have an account?") */
+main .card.p-4.shadow-sm p,
+main .card.p-4.shadow-sm p a {
+    color: #ffffff !important; /* Force white color */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+}
+main .card.p-4.shadow-sm p a:hover {
+    color: #e9ecef !important; /* Slightly lighter white on hover */
+    text-decoration: underline;
+}
+/* Form inputs */
+main .card.p-4.shadow-sm .form-control {
+    background-color: rgba(255, 255, 255, 0.8); /* Slightly opaque input background */
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: #212529; /* Dark text in input */
+    border-radius: 5px; /* Slightly rounded inputs */
+}
+main .card.p-4.shadow-sm .form-control:focus {
+    background-color: rgba(255, 255, 255, 0.95); /* More opaque on focus */
+    border-color: #0085A1; /* Use theme color for focus border */
+    box-shadow: 0 0 0 0.25rem rgba(0, 133, 161, 0.25);
+}
+/* Form submit button */
+main .card.p-4.shadow-sm .btn-primary {
+    /* Uses Bootstrap default, which is fine, or customize here */
+    width: 100%; /* Make button full width */
+}
+
+
+/* --- Flash Messages --- */
+.alert {
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+    /* Ensure text color has good contrast on potentially light alert backgrounds */
+}
+.alert-success { color: #0f5132; background-color: #d1e7dd; border-color: #badbcc; }
+.alert-danger { color: #842029; background-color: #f8d7da; border-color: #f5c2c7; }
+.alert-warning { color: #664d03; background-color: #fff3cd; border-color: #ffecb5; }
+.alert-info { color: #055160; background-color: #cff4fc; border-color: #b6effb; }
+
+
+/* --- Footer --- */
+footer {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  border-radius:2rem;
+  margin-top: 3rem;
+  background: rgba(0, 0, 0, 0.2); /* Darker glass */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+}
+footer .list-inline-item a {
+  color: rgba(255, 255, 255, 0.7);
+  transition: color 0.2s ease;
+}
+footer .list-inline-item a:hover {
+  color: #ffffff;
+}
+footer .list-inline-item a:hover .fa-inverse {
+   color: #0085A1;
+}
+footer .small {
+   color: rgba(184, 205, 243, 0.473);
+}

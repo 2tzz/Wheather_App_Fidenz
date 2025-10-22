@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+{% include "header.html" %}
+
+<div class="container px-4 px-lg-5 py-5">
+     {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category if category != 'message' else 'info' }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        {% if all_weather_city %}
+            {% for city in all_weather_city %}
+            <div class="col-md-6 col-lg-4 mb-4"> {# Responsive column sizing #}
+                 <a href="{{ url_for('show_city_detail', city_id=city.id) }}" class="card-link"> {# Link the whole card #}
+                    <div class="card weather-card h-100"> {# Glass effect card #}
+                        <div class="card-body text-center">
+                            <h5 class="card-title">{{ city.name }}</h5> {# City Name [cite: 38] #}
+                            {% if city.icon %}
+                                <img src="https://openweathermap.org/img/wn/{{ city.icon }}@2x.png" alt="{{ city.description }}" class="weather-icon">
+                            {% endif %}
+                            <p class="card-text temp">{{ city.temp|round(1) }}°C</p> {# Temperature [cite: 40] #}
+                            <p class="card-text description">{{ city.description|title }}</p> {# Weather Condition [cite: 39] #}
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <p class="text-center">No weather data to display.\</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% include "footer.html" %}
+{% endblock %}

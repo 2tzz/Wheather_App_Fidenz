@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+{% include "header.html" %}
+
+<div class="container px-4 px-lg-5 py-5">
+     {# Flash Messages #}
+     {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category if category != 'message' else 'info' }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            {% if city %}
+            <div class="card weather-card-detail shadow"> {# Slightly different style maybe #}
+                <div class="card-body text-center">
+                    <h2 class="card-title mb-3">{{ city.name }}</h2>
+                     {% if city.icon %}
+                        <img src="https://openweathermap.org/img/wn/{{ city.icon }}@4x.png" alt="{{ city.description }}" class="weather-icon-large mb-2"> {# Larger Icon #}
+                    {% endif %}
+                    <p class="card-text temp-large">{{ city.temp|round(1) }}°C</p>
+                    <p class="card-text description-large">{{ city.description|title }}</p>
+
+                    {# Placeholder for future forecast data #}
+                    <div class="mt-4">
+                        <p class="text-muted">Detailed forecast coming soon!</p>
+                    </div>
+
+                     <a href="{{ url_for('show_weather') }}" class="btn btn-outline-secondary mt-4">Back to Dashboard</a>
+                </div>
+            </div>
+            {% else %}
+             <div class="alert alert-warning" role="alert">
+                Could not load details for this city.
+            </div>
+             <a href="{{ url_for('show_weather') }}" class="btn btn-outline-secondary mt-4">Back to Dashboard</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% include "footer.html" %}
+{% endblock %}
