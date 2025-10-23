@@ -1,340 +1,335 @@
-/* ==========================
-   Base & Custom App Styles
-   ========================== */
+
+
 
 /* --- Body & General --- */
 body {
-  font-size: 1.25rem; /* Base font size */
-  font-family: 'Open Sans', sans-serif; /* Primary font */
-  color: #ffffff; /* Default text color (can be overridden) */
-
-  /* --- Background Image --- */
-  background-image: url('../assets/img/home-bg.jpeg'); /* Correct relative path */
-  background-size: cover;
-  background-attachment: fixed;
-  background-position: center center;
-  background-repeat: no-repeat;
-  /* Removed background-color to avoid conflicts */
+  font-family: 'Open Sans', sans-serif;
+  color: #f8f9fa; /* Light default text */
+  background-color: #1E2027; 
 }
 
-/* Ensure links are generally readable */
+
+.page-backdrop {
+  /* --- Positioning --- */
+  position: fixed;  /* Fixes it to the screen */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50vh;   
+  z-index: -1;    
+
+  /* --- The Fix --- */
+  background-image: url('../assets/img/backdrop.png');
+  background-size: cover; /* This stops distortion/shrinking */
+  background-position: center center; /* Keeps it centered */
+  background-repeat: no-repeat;
+}
+
 a {
-  color: #a3d1ff;
+  color: #0d6efd; 
 }
 a:hover {
-  color: #fdfdfd;
+  color: #3b8bfd;
 }
 
-/* --- Navigation Bar --- */
-#mainNav {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1030;
-  background-color: transparent; /* Start transparent */
-  font-family: "Open Sans", sans-serif;
-  transition: background-color 0.2s ease-in-out;
+/* --- Header Section (Title and Input) --- */
+.weather-header {
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 3rem; /* Space below header */
 }
-#mainNav .navbar-brand {
-  font-weight: 800;
-  color: #fff; /* White initially */
-}
-#mainNav .navbar-toggler {
-  font-size: 0.75rem;
-  font-weight: 800;
-  padding: 0.75rem;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.7);
-  border-color: rgba(255, 255, 255, 0.3);
-}
-#mainNav .navbar-nav > li.nav-item > a.nav-link,
-#mainNav .navbar-nav > li.nav-item > span.nav-link {
-  font-size: 0.75rem;
-  font-weight: 800;
-  letter-spacing: 0.0625em;
-  text-transform: uppercase;
-  color: #fff; /* White initially */
-}
-#mainNav .navbar-brand:focus, #mainNav .navbar-brand:hover,
-#mainNav .navbar-nav > li.nav-item > a.nav-link:focus,
-#mainNav .navbar-nav > li.nav-item > a.nav-link:hover {
-  color: rgba(255, 255, 255, 0.8);
-}
-
-/* Sticky/Fixed Nav Behavior */
-@media (min-width: 992px) {
-  #mainNav {
-    transform: translate3d(0, 0, 0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-  }
-  #mainNav.is-fixed {
-    position: fixed;
-    top: -83px; /* Adjust if your nav height is different */
-    transition: transform 0.2s;
-    border-bottom: 1px solid #dee2e6; /* Light border when fixed */
-    background-color: rgba(255, 255, 255, 0.95); /* Slightly opaque white */
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    z-index: 1031;
-  }
-  #mainNav.is-fixed .navbar-brand {
-    color: #212529; /* Dark text */
-  }
-  #mainNav.is-fixed .navbar-nav > li.nav-item > a.nav-link,
-  #mainNav.is-fixed .navbar-nav > li.nav-item > span.nav-link {
-    color: #212529; /* Dark text */
-  }
-  #mainNav.is-fixed .navbar-brand:focus, #mainNav.is-fixed .navbar-brand:hover,
-  #mainNav.is-fixed .navbar-nav > li.nav-item > a.nav-link:focus,
-  #mainNav.is-fixed .navbar-nav > li.nav-item > a.nav-link:hover {
-    color: #0085A1; /* Primary color */
-  }
-  #mainNav.is-visible {
-    transform: translate3d(0, 100%, 0);
-  }
-}
-
-/* --- Header Section (Masthead) --- */
-header.masthead {
-  position: relative;
-  margin-bottom: 0;
-  padding-top: 8rem;
-  padding-bottom: 4rem;
-  background-color: transparent; /* Rely on body background */
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-}
-header.masthead:before { /* Overlay */
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(33, 37, 41, 0.4); /* Dark overlay */
-}
-header.masthead .site-heading {
-  color: #fff;
-  text-align: center;
-  position: relative;
-  z-index: 2;
-}
-header.masthead .site-heading h1 {
-  font-size: 2.5rem;
-  font-weight: 800;
-}
-header.masthead .site-heading .subheading {
-  font-size: 1.2rem;
-  font-weight: 300;
-  line-height: 1.1;
-  display: block;
-  margin-top: 0.625rem;
-}
-@media (min-width: 992px) {
-  header.masthead {
-      padding-top: 10rem;
-      padding-bottom: 6rem;
-  }
-   header.masthead .site-heading h1 {
-      font-size: 4rem;
-  }
-   header.masthead .site-heading .subheading {
-      font-size: 1.5rem;
-  }
-}
-
-/* --- Main Content Area --- */
-.container.py-5 {
-  /* Optional subtle background */
-  /* background-color: rgba(255, 255, 255, 0.05); */
-  /* backdrop-filter: blur(2px); */
-  /* -webkit-backdrop-filter: blur(2px); */
-  /* border-radius: 8px; */
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-}
-
-/* --- Glassmorphism Card Style (Weather Cards) --- */
-.weather-card {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-radius: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.1);
+.app-title {
     color: #ffffff;
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    overflow: hidden;
+    font-weight: 600;
+
+    font-size: 1.5rem;
 }
-.weather-card:hover {
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 8px 30px 0 rgba(0, 0, 0, 0.15);
+.city-input {
+ 
+    border-radius: 5px 5px 5px 5px !important; /* Rounded left */
+    background-color: #1E2027;
+    border: none;
+    font-size: 0.9rem; 
+
+    padding-top: .375rem;
+    padding-bottom: .375rem;
+    line-height: 1.5;
 }
-.card-link { /* For clickable cards */
-    text-decoration: none;
-    color: inherit;
+
+.city-input:focus {
+    /* Keep your custom background color */
+
+    box-shadow: none;
+    outline: none;
+    border: none;
 }
-.card-link:hover {
-     color: inherit;
-}
-.weather-card .card-body {
+.add-city-btn {
+    background-color: #6C5DD3;
+    margin-left: -40px; 
     position: relative;
     z-index: 2;
+    border-radius: 5px 5px 5px 5px !important; 
+    border: none;
+    font-size: 0.8rem; /* <-- ADD THIS LINE */
+
+    padding-top: .375rem;
+    padding-bottom: .375rem;
+    line-height: 1.5;
 }
+
+.add-city-btn:hover {
+    background-color: #7565db;
+}
+
+/* --- Weather Card Base --- */
+.weather-card {
+    border-radius: 5px;
+    border: none; /* Remove default border */
+    color: #ffffff; /* White text inside cards */
+    position: relative; /* For positioning close button */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    
+    /* Default background color - can be overridden */
+    background-color: #273038; /* Default dark blue-grey */
+    transition: transform 0.2s ease-in-out;
+}
+.weather-card:hover {
+    transform: scale(1.03); /* Slight scale effect on hover */
+}
+
+
+.bg-1 { background-color: #3498db; } /* Blue */
+.bg-2 { background-color: #9b59b6; } /* pink */
+.bg-3 { background-color: #2ecc71; } /* Green */
+.bg-4 { background-color: #e67e22; } /* Orange */
+.bg-5 { background-color: #e74c3c; } /* Red */
+.bg-6 { background-color: #6C5DD3;} /* purple */ 
+
+
+
+/* Card Close Button */
+.card-close-btn {
+    color: white;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    opacity: 0.9;
+    z-index: 5;
+
+    transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+}
+.card-close-btn:hover {
+    color: white;
+    opacity: 1;
+    transform: scale(1.2); 
+}
+
+/* Card Body Adjustments */
+.weather-card .card-body {
+    padding: 0; /* Remove default padding, we use padding on .weather-card */
+}
+
+/* 2. Style the new top header div */
+.weather-card .card-top-header {
+    background-image: url('../assets/img/clouds.png'); /* Path relative to your css file */
+    background-size: cover; /* Stretches the image to cover the header */
+    background-position: center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents the image from tiling */
+    transition: background-position 2s ease-in-out; /* Makes the movement smooth */
+
+    border-radius: 5px 5px 0 0; padding-top: 2rem; 
+    padding-bottom: 2rem;
+    position: relative; 
+    margin: 0;
+}
+
+.weather-card:hover .card-top-header {
+    background-position: 40% center; /* Moves the image horizontally */
+    /* Try '60% center' or 'center 40%' for different directions */
+}
+
+.weather-details {
+    padding: 0 2px 0 15px; /* Add padding to the bottom/sides */
+}
+
+/* 5. Adjust the divider's margins to fit inside the new padding */
+.weather-divider {
+    margin-left: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* Top Left - City Info */
 .weather-card .card-title {
     font-weight: 600;
-    font-size: 1.4rem;
-    margin-bottom: 0.5rem;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    font-size: 1.5rem; /* Slightly smaller */
+    margin-bottom: 0.2rem !important; /* Reduced margin */
 }
-.weather-icon {
-    width: 60px;
-    height: 60px;
-    margin: 0.5rem auto;
-    filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.3));
+.weather-card .time-date {
+    opacity: 0.8;
+    margin-bottom: 0.5rem !important; /* Reduced margin */
+    
 }
-.weather-card .temp {
-    font-size: 2.2rem;
+.weather-icon-small {
+    width: 2.5rem; /* Smaller icon */
+    height: 2.5rem;
+    vertical-align: middle;
+}
+
+.weather-card .col-7 .d-flex {
+    justify-content: center; /* This will center the icon and description */
+}
+
+.weather-description {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    vertical-align: middle;
+}
+
+/* Top Right - Temperature Info */
+.temp-main {
+    font-size: 2.5rem; /* Large temperature */
     font-weight: 700;
-    margin: 0.5rem 0;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    line-height: 1;
+    padding-bottom: 2rem;
+    
 }
-.weather-card .description {
-    font-size: 1rem;
-    text-transform: capitalize;
-    font-style: italic;
+.temp-range {
+    font-size: 0.75rem; /* Smaller temp range text */
+    opacity: 0.8;
+    margin-bottom: 0.1rem !important; /* Minimal margin */
+    line-height: 1.2;
+}
+
+/* Divider Line */
+.weather-divider {
+    border-top: 1px solid rgba(255, 255, 255, 0.3); /* Lighter divider */
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+
+.weather-details {
+    font-size: 0.8rem; /* Smaller font for details */
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* This rule targets the correct class and the correct tag */
+.weather-card .wind-arrow svg {
+    /* Use width and height to size an SVG, not font-size */
+    width: 2rem !important;
+    height: 2rem !important; 
+    margin-bottom: 0.25rem; 
+}
+.detail-item {
+    padding: 0.1rem;
+}
+
+/* Style the new single span */
+.detail-item span {
+    font-weight: 600;
     opacity: 0.9;
 }
 
-/* --- Detail Card Styles --- */
-.weather-card-detail {
-     background: rgba(0, 0, 0, 0.2);
-     backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border-radius: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
-    color: #ffffff;
-    padding: 25px;
-}
-.weather-card-detail .card-body {
-     position: relative;
-     z-index: 2;
-}
-.weather-icon-large {
-    width: 120px;
-    height: 120px;
-    filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.4));
-}
-.temp-large {
-    font-size: 3.8rem;
-    font-weight: 700;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-}
-.description-large {
-    font-size: 1.4rem;
-    font-style: italic;
-    opacity: 0.9;
-}
-.weather-card-detail .btn-outline-secondary {
-    color: #fff;
-    border-color: rgba(255, 255, 255, 0.7);
-    background-color: rgba(255, 255, 255, 0.1);
-    transition: background-color 0.2s ease, border-color 0.2s ease;
-}
-.weather-card-detail .btn-outline-secondary:hover {
-    color: #fff;
-    background-color: rgba(255, 255, 255, 0.2);
-    border-color: #fff;
+/* Style the icon within the span */
+.detail-item i {
+    opacity: 0.8; /* Make icon slightly less prominent */
 }
 
-/* --- Form Styling (Login/Register) --- */
-main .card.p-4.shadow-sm { /* Target form cards specifically */
-    background: rgba(255, 255, 255, 0.15); /* Glass effect */
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    border-radius: 15px;
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+.detail-label {
+    opacity: 0.8;
+    margin-bottom: 0.1rem;
+    font-size: 0.7rem; /* Even smaller label */
+    display: flex; /* Allow icon alignment */
+    align-items: center;
 }
-/* Form labels */
-main .card.p-4.shadow-sm label {
-  color: #f8f9fa; /* Lighter color for labels */
-  font-weight: 500;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.4); /* Shadow for readability */
-}
-/* Form H2 heading */
-main .card.p-4.shadow-sm h2 {
-    color: #ffffff; /* White heading */
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); /* Shadow */
-}
-/* Form paragraph text and links ("Don't have an account?") */
-main .card.p-4.shadow-sm p,
-main .card.p-4.shadow-sm p a {
-    color: #ffffff !important; /* Force white color */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
-}
-main .card.p-4.shadow-sm p a:hover {
-    color: #e9ecef !important; /* Slightly lighter white on hover */
-    text-decoration: underline;
-}
-/* Form inputs */
-main .card.p-4.shadow-sm .form-control {
-    background-color: rgba(255, 255, 255, 0.8); /* Slightly opaque input background */
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    color: #212529; /* Dark text in input */
-    border-radius: 5px; /* Slightly rounded inputs */
-}
-main .card.p-4.shadow-sm .form-control:focus {
-    background-color: rgba(255, 255, 255, 0.95); /* More opaque on focus */
-    border-color: #0085A1; /* Use theme color for focus border */
-    box-shadow: 0 0 0 0.25rem rgba(0, 133, 161, 0.25);
-}
-/* Form submit button */
-main .card.p-4.shadow-sm .btn-primary {
-    /* Uses Bootstrap default, which is fine, or customize here */
-    width: 100%; /* Make button full width */
+.detail-value {
+    font-weight: 600;
 }
 
 
-/* --- Flash Messages --- */
-.alert {
-    margin-bottom: 1.5rem;
-    border-radius: 8px;
-    /* Ensure text color has good contrast on potentially light alert backgrounds */
-}
-.alert-success { color: #0f5132; background-color: #d1e7dd; border-color: #badbcc; }
-.alert-danger { color: #842029; background-color: #f8d7da; border-color: #f5c2c7; }
-.alert-warning { color: #664d03; background-color: #fff3cd; border-color: #ffecb5; }
-.alert-info { color: #055160; background-color: #cff4fc; border-color: #b6effb; }
 
 
-/* --- Footer --- */
+/* --- Footer --- (Revised for dark theme) --- */
 footer {
   padding-top: 2rem;
   padding-bottom: 2rem;
-  border-radius:2rem;
   margin-top: 3rem;
-  background: rgba(0, 0, 0, 0.2); /* Darker glass */
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.1);
-  color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(10, 10, 10, 0.3); /* Darker semi-transparent footer */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1); /* Subtle top border */
+  color: rgba(255, 255, 255, 0.6); /* Lighter grey text */
 }
 footer .list-inline-item a {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.6);
   transition: color 0.2s ease;
 }
 footer .list-inline-item a:hover {
   color: #ffffff;
 }
+footer .list-inline-item a .fa-stack-2x { /* Circle background */
+    color: rgba(255, 255, 255, 0.1);
+}
+footer .list-inline-item a:hover .fa-stack-2x {
+    color: rgba(255, 255, 255, 0.2);
+}
+footer .list-inline-item a .fa-inverse { /* Icon */
+    color: rgba(255, 255, 255, 0.7);
+}
 footer .list-inline-item a:hover .fa-inverse {
-   color: #0085A1;
+   color: #fff; /* White icon on hover */
 }
 footer .small {
-   color: rgba(184, 205, 243, 0.473);
+   color: rgba(255, 255, 255, 0.4); /* Even lighter grey copyright */
+}
+
+/* --- Login & Register Form Styles --- */
+
+/* Style the card background */
+main .card {
+    background-color: #2a2d35; /* A dark, neutral color */
+    border: none;
+}
+
+/* Style the "Email", "Password" labels */
+main .form-label {
+    color: #f8f9fa;
+}
+
+/* Style the input fields */
+main .form-control {
+    background-color: #1E2027; /* Match your city-input */
+    border: none;
+    color: #f8f9fa; /* Light text */
+    font-size: 0.9rem;
+    padding-top: .375rem;
+    padding-bottom: .375rem;
+    line-height: 1.5;
+}
+
+/* Remove the blue glow on click */
+main .form-control:focus {
+    background-color: #1E2027;
+    color: #f8f9fa;
+    box-shadow: none;
+    outline: none;
+    border: none;
+}
+
+/* Style the "Don't have an account?" text */
+main .col-xl-5 p.text-center {
+    color: #adb5bd; /* Muted light text */
+}
+
+/* Style the submit button to match the input height */
+main .btn[type="submit"] {
+    background: #6C5DD3;
+    color: #1E2027;
+    font-size: 0.9rem;
+    padding-top: .375rem;
+    padding-bottom: .375rem;
+    line-height: 1.5;
 }

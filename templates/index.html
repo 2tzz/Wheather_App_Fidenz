@@ -1,40 +1,114 @@
 {% extends "base.html" %}
 {% block content %}
-{% include "header.html" %}
+<div class="container text-center mt-5 mb-4 weather-header">
+    <h1 class="app-title">Weather App</h1>
+
+    <form class="d-flex justify-content-center mt-3" method="POST" action="{{ url_for('add_city') }}">
+        
+        <input class="form-control city-input" type="search" placeholder="Enter a city" aria-label="Enter a city" style="max-width: 300px;" name="city_name">
+        
+        <button class="btn btn-primary add-city-btn" type="submit">Add City</button>
+    </form>
+</div>
 
 <div class="container px-4 px-lg-5 py-5">
+     {# Flash Messages #}
      {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                <div class="alert alert-{{ category if category != 'message' else 'info' }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
+       {% if messages %}
+           {% for category, message in messages %}
+               <div class="alert alert-{{ category if category != 'message' else 'info' }} alert-dismissible fade show" role="alert">
+                   {{ message }}
+                   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+               </div>
+           {% endfor %}
+       {% endif %}
+     {% endwith %}
 
-    <div class="row gx-4 gx-lg-5 justify-content-center">
+    <div class="row gx-4 gy-4 justify-content-center"> {# Use gy-4 for vertical gap #}
         {% if all_weather_city %}
             {% for city in all_weather_city %}
-            <div class="col-md-6 col-lg-4 mb-4"> {# Responsive column sizing #}
-                 <a href="{{ url_for('show_city_detail', city_id=city.id) }}" class="card-link"> {# Link the whole card #}
-                    <div class="card weather-card h-100"> {# Glass effect card #}
-                        <div class="card-body text-center">
-                            <h5 class="card-title">{{ city.name }}</h5> {# City Name [cite: 38] #}
-                            {% if city.icon %}
-                                <img src="https://openweathermap.org/img/wn/{{ city.icon }}@2x.png" alt="{{ city.description }}" class="weather-icon">
-                            {% endif %}
-                            <p class="card-text temp">{{ city.temp|round(1) }}°C</p> {# Temperature [cite: 40] #}
-                            <p class="card-text description">{{ city.description|title }}</p> {# Weather Condition [cite: 39] #}
-                        </div>
-                    </div>
-                </a>
-            </div>
+            <div class="col-md-5"> 
+                <div class="card weather-card h-100">
+
+                    <!-- Close button (correctly placed) -->
+                    <a href="{{ url_for('delete_city', city_id=city.id) }}" class="card-close-btn" aria-label="Close">
+                        <i class="fas fa-times"></i>
+                    </a>
+
+                    <div class="card-body">
+                        
+                        <!-- 1. The header div with the *city.id* for stable color -->
+                        <div class="row align-items-center card-top-header bg-{{ (city.id % 6) + 1 }}">
+                            
+                            <!-- Header content *inside* -->
+                            <div class="col-7 d-flex flex-column justify-content-center text-center"> 
+                                <h5 class="card-title mb-0">{{ city.name }}, {{ city.country }}</h5>
+                                <p class="card-text time-date small mb-1">{{ city.dt_formatted }}</p>
+                                <div class="d-flex align-items-center justify-content-center"> 
+                                    {% if city.icon %}
+                                    <img src="https://openweathermap.org/img/wn/{{ city.icon }}.png" alt="{{ city.description }}" class="weather-icon-small me-2">
+                                    {% endif %}
+                                    <span class="weather-description">{{ city.description|title }}</span>
+                                </div>
+                            </div>
+                            <div class="col-4 text-end d-flex flex-column justify-content-center text-center"> 
+                                <p class="temp-main mb-0">{% if city.temp is not none %}{{ city.temp|round|int }}°c{% else %}N/A{% endif %}</p>
+                                {% if city.temp_min is not none %}
+                                <p class="temp-range small">Temp Min: {{ city.temp_min|round|int }}°C</p>
+                                {% endif %}
+                                {% if city.temp_max is not none %}
+                                <p class="temp-range small">Temp Max: {{ city.temp_max|round|int }}°C</p>
+                                {% endif %}
+                            </div>
+                        </div> <!-- End of .card-top-header -->
+
+                        <!-- 2. Stretched link to make card clickable -->
+                        <a href="{{ url_for('show_city_detail', city_id=city.id) }}" 
+                           class="stretched-link" 
+                           aria-label="View details for {{ city.name }}">
+                        </a>
+
+                        <!-- 3. Details div with its content *inside* -->
+                        <div class="row weather-details">
+                            
+                            <!-- Details content *inside* -->
+                            <div class="col-4 d-flex flex-column justify-content-center text-left">
+                                <div class="detail-item">
+                                    <span>Pressure: {{ city.pressure }} hPa</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span>Humidity: {{ city.humidity }}%</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span>Visibility: {{ city.visibility }} km</span>
+                                </div>
+                            </div>
+
+                            <div class="col-4 d-flex flex-column justify-content-center text-center border-start border-white border-opacity-25"> 
+                                <div class="wind-arrow"><i class="fas fa-location-arrow"></i></div>
+                                <div class="detail-item">
+                                        <span>Wind: {{ city.wind_speed }} m/s</span>
+                                </div>
+                            </div>
+
+                            <div class="col-4 d-flex flex-column justify-content-center text-center border-start border-white border-opacity-25"> 
+                                <div class="detail-item">
+                                    <i class="fas fa-arrow-up"></i> <span>Sunrise: {{ city.sunrise_formatted }}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-arrow-down"></i> <span>Sunset: {{ city.sunset_formatted }}</span>
+                                </div>
+                            </div>
+
+                        </div> <!-- End of .weather-details -->
+
+                    </div> <!-- End of .card-body -->
+                </div> <!-- End of .weather-card -->
+            </div> <!-- End of .col-md-5 -->
             {% endfor %}
         {% else %}
             <div class="col-12">
-                <p class="text-center">No weather data to display.\</p>
+                <p class="text-center text-white-50">No weather data to display.</p>
             </div>
         {% endif %}
     </div>

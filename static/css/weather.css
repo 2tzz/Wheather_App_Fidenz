@@ -1,0 +1,209 @@
+.weather-card {
+    border-radius: 5px;
+    border: none; /* Remove default border */
+    color: #ffffff; /* White text inside cards */
+    position: relative; /* For positioning close button */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    
+    /* Default background color - can be overridden */
+    background-color: #273038; /* Default dark blue-grey */
+    transition: transform 0.2s ease-in-out;
+}
+.weather-card:hover {
+    transform: scale(1.03); /* Slight scale effect on hover */
+}
+
+
+.bg-1 { background-color: #3498db; } /* Blue */
+.bg-2 { background-color: #9b59b6; } /* pink */
+.bg-3 { background-color: #2ecc71; } /* Green */
+.bg-4 { background-color: #e67e22; } /* Orange */
+.bg-5 { background-color: #e74c3c; } /* Red */
+.bg-6 { background-color: #6C5DD3;} /* purple */ 
+
+
+
+/* Card Close Button */
+.card-close-btn {
+    color: white;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    opacity: 0.9;
+    z-index: 5;
+
+    transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+}
+.card-close-btn:hover {
+    color: white;
+    opacity: 1;
+    transform: scale(1.2); 
+}
+
+/* Card Body Adjustments */
+.weather-card .card-body {
+    padding: 0; 
+}
+
+/* 2. Style the new top header div */
+.weather-card .card-top-header {
+    border-radius: 5px 5px 0 0; padding-top: 2rem; 
+    padding-bottom: 2rem;
+    position: relative; 
+    margin: 0;
+}
+
+.weather-card:hover .card-top-header {
+    background-position: 40% center; 
+  
+}
+
+.weather-details {
+    padding: 0 2px 0 15px; 
+}
+
+
+.weather-divider {
+    margin-left: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* Top Left - City Info */
+.weather-card .card-title {
+    font-weight: 600;
+    font-size: 1.5rem; 
+    margin-bottom: 0.2rem !important; 
+}
+.weather-card .time-date {
+    opacity: 0.8;
+    margin-bottom: 0.5rem !important; 
+    
+}
+.weather-icon-small {
+    width: 2.5rem; 
+    height: 2.5rem;
+    vertical-align: middle;
+}
+
+.weather-card .col-7 .d-flex {
+    justify-content: center; 
+}
+
+.weather-description {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    vertical-align: middle;
+}
+
+
+.temp-main {
+    font-size: 2.5rem; 
+    font-weight: 700;
+    line-height: 1;
+    padding-bottom: 2rem;
+    
+}
+.temp-range {
+    font-size: 0.75rem; 
+    opacity: 0.8;
+    margin-bottom: 0.1rem !important; 
+    line-height: 1.2;
+}
+
+/* Divider Line */
+.weather-divider {
+    border-top: 1px solid rgba(255, 255, 255, 0.3); 
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+
+.weather-details {
+    font-size: 0.8rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+
+.weather-card .wind-arrow svg {
+    width: 2rem !important;
+    height: 2rem !important; 
+    margin-bottom: 0.25rem; 
+}
+.detail-item {
+    padding: 0.1rem;
+}
+
+/* Style the new single span */
+.detail-item span {
+    font-weight: 600;
+    opacity: 0.9;
+}
+
+/* Style the icon within the span */
+.detail-item i {
+    opacity: 0.8; 
+}
+
+.detail-label {
+    opacity: 0.8;
+    margin-bottom: 0.1rem;
+    font-size: 0.7rem; 
+    display: flex; 
+    align-items: center;
+}
+.detail-value {
+    font-weight: 600;
+}
+
+
+/* ==================================
+   CUSTOM STYLES FOR DETAIL PAGE CARD
+   ================================== */
+/* (Add this to the end of static/css/weather.css) */
+
+/* Target the main detail card container */
+.weather-card-detail {
+    background-color: #2c3e50; /* Example: A different background color */
+    border-radius: 10px;        /* Example: More rounded corners */
+    /* Add any other base styles you want... */
+}
+
+/* Target the header of the detail card */
+.card-top-header-detail {
+    border-radius: 10px 10px 0 0;
+    padding-top: 3rem;       /* Example: Taller header */
+    padding-bottom: 3rem;
+}
+
+/* Target the body/details section of the detail card */
+.weather-details-detail {
+    padding: 2rem; /* Example: More padding in the details section */
+    font-size: 0.9rem;
+}
+
+/* * You can also style the *internal* classes by nesting them under
+ * your new unique class names. This is the key part.
+*/
+
+/* Example: Make the main temperature HUGE on the detail page */
+.weather-card-detail .temp-main {
+    font-size: 5rem;
+    padding-bottom: 1rem;
+}
+
+/* Example: Make the detail items bigger */
+.weather-details-detail .detail-item {
+    padding: 0.5rem 0;
+    font-size: 1rem;
+}
+
+/* Example: Style the "back" arrow */
+.card-top-header-detail .fa-arrow-left {
+    transition: transform 0.2s ease;
+}
+.card-top-header-detail .fa-arrow-left:hover {
+    transform: scale(1.2);
+}

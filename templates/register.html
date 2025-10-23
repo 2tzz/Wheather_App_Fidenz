@@ -1,14 +1,13 @@
 {% extends "base.html" %}
 {% from "bootstrap5/form.html" import render_form %}
 {% block content %}
-{% include "header.html" %}
 
-<main class="mb-4 mt-5"> {# Added mt-5 for spacing below header #}
+
+<main class="mb-4 mt-5 flex-grow-1"> {# Added mt-5 for spacing below header #}
     <div class="container">
          <div class="row justify-content-center"> {# Centering the form #}
              <div class="col-md-8 col-lg-6 col-xl-5"> {# Adjusted column width #}
                 <h2 class="text-center mb-4">Register</h2>
-                 {# Flash Messages (Optional but good practice) #}
                 {% with messages = get_flashed_messages(with_categories=true) %}
                     {% if messages %}
                         {% for category, message in messages %}
@@ -21,7 +20,7 @@
                 {% endwith %}
 
                  <div class="card p-4 shadow-sm"> {# Added card styling #}
-                    {{ render_form(form, novalidate=True, button_map={'submit': 'primary btn-block'}) }}
+                    {{ render_form(form, novalidate=True, button_map={'submit': 'outline-secondary w-100'}) }}
                  </div>
                  <p class="text-center mt-3">
                      Already have an account? <a href="{{ url_for('login') }}">Log in here</a>
