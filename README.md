@@ -76,6 +76,50 @@ APP_SECRET="XXXXXXXXXXXX"
 ```
 Note: For a production environment, replace APP_SECRET with a new, securely generated random string.
 
+🔐 Auth0 Setup (Required for Login)
+
+This project uses Auth0 for user authentication.
+Follow these steps to configure it:
+
+Go to the Auth0 Dashboard:
+https://auth0.com/
+
+Create a new Regular Web Application
+
+Go to:
+Application → Settings
+
+Enable the following URLs:
+
+Allowed Callback URLs
+
+http://127.0.0.1:5002/callback
+
+
+Allowed Logout URLs
+
+http://127.0.0.1:5002, http://127.0.0.1:5002/login
+
+
+Allowed Web Origins
+
+http://127.0.0.1:5002
+
+🛠️ Add Auth0 Credentials to .env
+
+Open your .env file and add these lines 👇
+
+# --- Auth0 Credentials ---
+AUTH0_DOMAIN="YOUR_AUTH0_DOMAIN"
+AUTH0_CLIENT_ID="YOUR_AUTH0_CLIENT_ID"
+AUTH0_CLIENT_SECRET="YOUR_AUTH0_CLIENT_SECRET"
+
+# Example:
+# AUTH0_DOMAIN="dev-xxxxxx.auth0.com"
+
+
+✅ Make sure to replace the placeholders with values from your Auth0 application settings page.
+
 🏃‍♂️ Running the Application
 
 Once the installation and configuration are complete, you can run the app.

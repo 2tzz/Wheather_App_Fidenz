@@ -18,7 +18,6 @@ dotenv.load_dotenv()
 
 # --- App Configuration ---
 app = Flask(__name__)
-# Use SECRET_KEY for Flask's session, which Auth0 relies on
 app.config['SECRET_KEY'] = os.getenv('APP_SECRET')
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 app.config['SESSION_COOKIE_SECURE'] = False
@@ -56,12 +55,9 @@ oauth.register(
 
 class User(db.Model):
     __tablename__ = "users"
-    # The 'sub' (subject) from Auth0 is the primary key.
     sub: Mapped[str] = mapped_column(String(250), primary_key=True)
     username: Mapped[str] = mapped_column(String(250), nullable=False)
     email: Mapped[str] = mapped_column(String(250), unique=True, nullable=False)
-
-    # This links the User to their list of cities
     cities = relationship("UserCity", back_populates="user", cascade="all, delete-orphan")
 
 
@@ -69,8 +65,6 @@ class UserCity(db.Model):
     __tablename__ = "user_cities"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     city_id: Mapped[int] = mapped_column(Integer, nullable=False)
-
-    # user_id links to the User.sub (string) field
     user_id: Mapped[str] = mapped_column(String(250), ForeignKey("users.sub"))
     user = relationship("User", back_populates="cities")
 
@@ -78,17 +72,12 @@ class UserCity(db.Model):
 # --- Auth0 Helper Functions ---
 
 def get_or_create_user(auth0_user_info):
-    """
-    Finds a user by their Auth0 'sub' ID.
-    If they don't exist, create them in the local database.
-    """
     user_sub = auth0_user_info['sub']
     user = db.session.get(User, user_sub)
 
     if not user:
         user = User(
             sub=user_sub,
-            # Use 'name' if available, otherwise fallback to email
             username=auth0_user_info.get('name', auth0_user_info.get('email')),
             email=auth0_user_info.get('email')
         )
@@ -98,40 +87,28 @@ def get_or_create_user(auth0_user_info):
 
 
 def requires_auth(f):
-    """
-    A custom decorator to replace @login_required.
-    Checks if the user is in the session (logged in).
-    """
     @wraps(f)
     def decorated(*args, **kwargs):
         if 'user' not in session:
-            # User is not logged in, redirect to login page.
             return redirect(url_for('login'))
 
-        # User is logged in, load them into g.user
         auth0_user_info = session["user"]
         user = db.session.get(User, auth0_user_info['sub'])
         if not user:
-            # This could happen if user was deleted from DB but not session
             session.clear()
             flash("User not found, please log in again.", "warning")
             return redirect(url_for('login'))
 
-        g.user = user  # Set g.user to the local SQLAlchemy User object
+        g.user = user
         return f(*args, **kwargs)
     return decorated
 
 
 @app.before_request
 def load_current_user():
-    """
-    Load the user from the session into `g.user` on every request.
-    `g` is available in all templates automatically.
-    """
     g.user = None
     if "user" in session:
         auth0_user_info = session["user"]
-        # We fetch our *local* user record
         user = db.session.get(User, auth0_user_info['sub'])
         if user:
             g.user = user
@@ -140,18 +117,12 @@ def load_current_user():
 # --- Helper Functions (Weather) ---
 
 def format_timestamp(timestamp_utc, offset_seconds):
-    """
-    Convert a UTC timestamp (seconds) plus timezone offset (seconds) into a nicely formatted local time string.
-    Returns "N/A" on error or missing data.
-    """
     if timestamp_utc is None or offset_seconds is None:
         return "N/A"
     try:
         local_tz = timezone(timedelta(seconds=offset_seconds))
         local_time = datetime.fromtimestamp(timestamp_utc, tz=timezone.utc).astimezone(local_tz)
-        # Show like "8:30am, Oct 24" (lowercase am/pm) and remove leading zeros
         formatted = local_time.strftime("%I:%M%p, %b %d").lower().lstrip('0')
-        # remove redundant ":00" if exact hour (e.g., "8:00am" -> "8am")
         formatted = formatted.replace(":00", "")
         return formatted
     except Exception as e:
@@ -160,9 +131,6 @@ def format_timestamp(timestamp_utc, offset_seconds):
 
 
 def find_city_by_name(city_name):
-    """
-    Query OpenWeatherMap by city name and return the city ID (int) if found, otherwise None.
-    """
     params = {"q": city_name, "appid": API_KEY, "units": "metric"}
     try:
         response = requests.get(WEATHER_URL, params=params, timeout=10)
@@ -186,9 +154,6 @@ def find_city_by_name(city_name):
 
 
 def get_weather_data(city_id):
-    """
-    Get weather data for a city ID, using cache. Returns a dict or None on failure.
-    """
     cache_key = f"weather_{city_id}"
     weather_data = cache.get(cache_key)
     if weather_data is None:
@@ -204,7 +169,6 @@ def get_weather_data(city_id):
                 cod = 0
 
             if cod != 200:
-                print(f"API error for city {city_id}: {data.get('message', 'Unknown error')}")
                 return None
 
             main_data = data.get("main", {})
@@ -240,15 +204,13 @@ def get_weather_data(city_id):
                 "sunset_formatted": format_timestamp(sunset_utc, timezone_offset),
             }
             cache.set(cache_key, weather_data, timeout=CACHE_TIMEOUT)
-            print(f"Fetched from API for {city_id}")
         except requests.exceptions.RequestException as e:
             print(f"HTTP Error fetching weather for {city_id}: {e}")
             return None
         except (json.JSONDecodeError, IndexError, TypeError) as e:
             print(f"Error parsing weather data for {city_id}: {e}")
             return None
-    else:
-        print(f"Fetched from CACHE for {city_id}")
+            
     return weather_data
 
 
@@ -256,21 +218,13 @@ def get_weather_data(city_id):
 
 @app.route('/')
 def index():
-    """
-    Show the login page if not authenticated,
-    otherwise redirect to the weather dashboard.
-    """
     if g.user:
         return redirect(url_for('show_weather'))
-
     return redirect(url_for('login'))
 
 
 @app.route('/login')
 def login():
-    """
-    Redirects to Auth0's Universal Login page.
-    """
     return oauth.auth0.authorize_redirect(
         redirect_uri=url_for("callback", _external=True)
     )
@@ -278,20 +232,14 @@ def login():
 
 @app.route('/callback', methods=['GET', 'POST'])
 def callback():
-    """
-    Callback route that Auth0 redirects to after login.
-    """
     token = oauth.auth0.authorize_access_token()
     auth0_user_info = token.get('userinfo') or token.get('id_token_claims') or {}
-    # Authlib usually puts profile in "userinfo"
+    
     if not auth0_user_info:
         flash("Could not retrieve user info from Auth0.", "error")
         return redirect(url_for('index'))
 
-    # Find or create the user in our local DB
     user = get_or_create_user(auth0_user_info)
-
-    # Store the user's Auth0 info in the Flask session
     session["user"] = auth0_user_info
 
     flash('Logged in successfully.', 'success')
@@ -300,19 +248,11 @@ def callback():
 
 @app.route('/logout')
 def logout():
-    """
-    Logs the user out of both the Flask app and Auth0.
-    """
-    session.clear()  # Clear the local session
+    session.clear() 
 
-    # Build the Auth0 logout URL
     domain = os.getenv('AUTH0_DOMAIN')
     client_id = os.getenv('AUTH0_CLIENT_ID')
-    
-    # --- THIS IS THE CHANGE ---
-    # Send user to the login route after logout, not the index.
-    return_to = url_for('login', _external=True)  
-    # --------------------------
+    return_to = url_for('login', _external=True) 
 
     logout_url = f'https://{domain}/v2/logout?' + urlencode(
         {'returnTo': return_to, 'client_id': client_id},
@@ -332,7 +272,6 @@ def add_city():
     city_id = find_city_by_name(city_name)
 
     if city_id:
-        # Check if user already has this city, using g.user.sub
         existing = db.session.execute(
             db.select(UserCity).where(
                 UserCity.user_id == g.user.sub,
@@ -410,11 +349,5 @@ def show_city_detail(city_id):
 # --- Main Execution ---
 if __name__ == "__main__":
     with app.app_context():
-        if not os.path.exists(db_path):
-            print("Database not found, creating tables...")
-            db.create_all()
-            print("Database and tables created.")
-        else:
-            db.create_all()  # Ensures tables are created if DB exists
-            print("Database found. Ensured all tables exist.")
-    app.run(debug=True, port=5002)
+        db.create_all() 
+    app.run(port=5002)

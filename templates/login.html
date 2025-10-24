@@ -1,19 +1,16 @@
 {% extends "base.html" %}
 
-{# 1. Add the Auth0 Lock CDN script to the <head> block #}
 {% block head %}
-    {{ super() }} {# This includes any styles/scripts from base.html's head #}
+    {{ super() }}
     <script src="https://cdn.auth0.com/js/lock/11.30/lock.min.js"></script>
 {% endblock %}
-
 
 {% block content %}
 <main class="mt-5 pb-5 flex-grow-1">
     <div class="container">
-        <div class="row justify-content-center"> 
-            <div class="col-md-8 col-lg-6 col-xl-5"> 
-                
-                {# Flash Messages (Keep this) #}
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6 col-xl-5">
+
                 {% with messages = get_flashed_messages(with_categories=true) %}
                     {% if messages %}
                         {% for category, message in messages %}
@@ -25,44 +22,37 @@
                     {% endif %}
                 {% endwith %}
 
-                <div class="card shadow-sm text-center"> 
-                    {# 2. This container will hold the Auth0 widget #}
+                <div class="card shadow-sm text-center">
                     <div id="auth0-lock-container"></div>
                 </div>
+
             </div>
         </div>
     </div>
 </main>
-{# We remove {% include "footer.html" %} because it's in base.html now #}
 {% endblock %}
 
-
-{# 3. This block adds the JavaScript to RUN Auth0 Lock #}
 {% block scripts %}
-<script type="text/javascript">
-  var lock = new Auth0Lock(
-    '{{ AUTH0_CLIENT_ID }}',
-    '{{ AUTH0_DOMAIN }}',
-    {
-      auth: {
-        redirectUrl: '{{ AUTH0_CALLBACK_URL }}',
-        responseType: 'code',
-        params: {
-          scope: 'openid profile email'
+<script>
+    var lock = new Auth0Lock(
+        '{{ AUTH0_CLIENT_ID }}',
+        '{{ AUTH0_DOMAIN }}',
+        {
+            auth: {
+                redirectUrl: '{{ AUTH0_CALLBACK_URL }}',
+                responseType: 'code',
+                params: { scope: 'openid profile email' }
+            },
+            container: 'auth0-lock-container',
+            theme: {
+                logo: '{{ url_for("static", filename="assets/img/weather_icon.png") }}',
+                primaryColor: '#6C5DD3'
+            },
+            languageDictionary: { title: "Weather App" },
+            closable: false
         }
-      },
-      container: 'auth0-lock-container',
-      theme: {
-        logo: '{{ url_for('static', filename='assets/img/weather_icon.png') }}',
-        primaryColor: '#6C5DD3'
-      },
-      languageDictionary: {
-        title: "Weather App"
-      },
-      closable: false // Prevents users from closing the login box
-    }
-  );
-  // Show the Lock
-  lock.show();
+    );
+
+    lock.show();
 </script>
 {% endblock %}
