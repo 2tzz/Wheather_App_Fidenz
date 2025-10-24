@@ -68,10 +68,10 @@ The application requires API keys to function.
 Create a new file named .env in the root of your project directory and add the following:
 ```
 # Get this from your OpenWeatherMap account
-API_KEY="c47cee32692a452f9b5663107eb0878e"
+API_KEY="XXXXXXXXXXXX"
 
 # A random, long string for Flask's session security
-APP_SECRET="8BYkEfBA6O6donzWlSihBXox7C0sKR6b"
+APP_SECRET="XXXXXXXXXXXX"
 
 ```
 Note: For a production environment, replace APP_SECRET with a new, securely generated random string.
