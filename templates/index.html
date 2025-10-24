@@ -15,7 +15,6 @@
 </div>
 
 <div class="container px-4 px-lg-5 py-5">
-     {# Flash Messages #}
      {% with messages = get_flashed_messages(with_categories=true) %}
        {% if messages %}
            {% for category, message in messages %}
@@ -27,7 +26,7 @@
        {% endif %}
      {% endwith %}
 
-    <div class="row gx-4 gy-4 justify-content-center"> {# Use gy-4 for vertical gap #}
+    <div class="row gx-4 gy-4 justify-content-center"> 
         {% if all_weather_city %}
             {% for city in all_weather_city %}
             <div class="col-md-5"> 

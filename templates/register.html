@@ -3,10 +3,10 @@
 {% block content %}
 
 
-<main class="mb-4 mt-5 flex-grow-1"> {# Added mt-5 for spacing below header #}
+<main class="mb-4 mt-5 flex-grow-1"> 
     <div class="container">
-         <div class="row justify-content-center"> {# Centering the form #}
-             <div class="col-md-8 col-lg-6 col-xl-5"> {# Adjusted column width #}
+         <div class="row justify-content-center"> 
+             <div class="col-md-8 col-lg-6 col-xl-5">
                 <h2 class="text-center mb-4">Register</h2>
                 {% with messages = get_flashed_messages(with_categories=true) %}
                     {% if messages %}
@@ -19,7 +19,7 @@
                     {% endif %}
                 {% endwith %}
 
-                 <div class="card p-4 shadow-sm"> {# Added card styling #}
+                 <div class="card p-4 shadow-sm"> 
                     {{ render_form(form, novalidate=True, button_map={'submit': 'outline-secondary w-100'}) }}
                  </div>
                  <p class="text-center mt-3">

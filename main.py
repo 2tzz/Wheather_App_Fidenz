@@ -87,15 +87,10 @@ def format_timestamp(timestamp_utc, offset_seconds):
     if timestamp_utc is None or offset_seconds is None:
         return "N/A"
     try:
-        # Create a timezone object from the offset
         local_tz = timezone(timedelta(seconds=offset_seconds))
-        # Convert UTC timestamp to a datetime object, then apply the local timezone
         local_time = datetime.fromtimestamp(timestamp_utc, tz=timezone.utc).astimezone(local_tz)
-
-        # Check if formatting for 'now' (dt) or sunrise/sunset
         current_time_utc = datetime.now(timezone.utc).timestamp()
         
-        # Check if the timestamp is close to now (for 'dt')
         if abs(current_time_utc - timestamp_utc) < 7200:  # 2-hour window
             return local_time.strftime("%I:%M%p, %b %d").lower().lstrip('0').replace(':00', '')
         else:  # For sunrise/sunset, just show time
@@ -149,12 +144,10 @@ def get_weather_data(city_id):
             response.raise_for_status()  # Raise HTTPError for bad responses (4xx or 5xx)
             data = response.json()
 
-            # --- Check for API error code inside the JSON ---
             if data.get("cod") != 200:
                 print(f"API error for city {city_id}: {data.get('message', 'Unknown error')}")
                 return None  # Return None to skip this card
 
-            # --- Safe key access ---
             main_data = data.get("main", {})
             sys_data = data.get("sys", {})
             wind_data = data.get("wind", {})
@@ -163,18 +156,17 @@ def get_weather_data(city_id):
 
             timezone_offset = data.get('timezone')  # Offset in seconds from UTC
 
-            # Extract fields with safe defaults
             temp = main_data.get("temp")
             temp_min = main_data.get("temp_min")
             temp_max = main_data.get("temp_max")
             visibility_m = data.get("visibility")  # Visibility in meters
             wind_speed_ms = wind_data.get("speed")  # Wind speed in m/s
-            dt_utc = data.get("dt")  # Timestamp for current data
+            dt_utc = data.get("dt")  
             sunrise_utc = sys_data.get("sunrise")
             sunset_utc = sys_data.get("sunset")
 
             weather_data = {
-                "id": city_id,  # Pass the ID for the delete button
+                "id": city_id,  
                 "name": data.get("name", "N/A"),
                 "country": sys_data.get("country", ""),
                 "description": weather_main.get("description", "N/A"),
@@ -184,11 +176,8 @@ def get_weather_data(city_id):
                 "icon": weather_main.get("icon"),
                 "pressure": main_data.get("pressure", "N/A"),
                 "humidity": main_data.get("humidity", "N/A"),
-                # Safely format visibility
                 "visibility": f"{visibility_m / 1000.0:.1f}" if isinstance(visibility_m, (int, float)) else "N/A",
-                # Safely format wind speed
                 "wind_speed": f"{wind_speed_ms }" if isinstance(wind_speed_ms, (int, float)) else "N/A",
-                # Timestamps
                 "dt_formatted": format_timestamp(dt_utc, timezone_offset),
                 "sunrise_formatted": format_timestamp(sunrise_utc, timezone_offset),
                 "sunset_formatted": format_timestamp(sunset_utc, timezone_offset),
@@ -198,7 +187,6 @@ def get_weather_data(city_id):
             print(f"Fetched from API for {city_id}")
 
         except requests.exceptions.RequestException as e:
-            # This catches network errors or HTTP 4xx/5xx errors
             print(f"HTTP Error fetching weather for {city_id}: {e}")
             return None
         except (json.JSONDecodeError, IndexError, TypeError) as e:  # Parsing error
@@ -226,7 +214,7 @@ def login():
         if user and check_password_hash(user.password, password):
             login_user(user)
             flash('Logged in successfully.', 'success')
-            return redirect(url_for('show_weather'))  # Redirect to weather page
+            return redirect(url_for('show_weather'))  
         else:
             flash('Invalid email or password.', 'error')
     return render_template("login.html", form=form)
@@ -331,12 +319,11 @@ def delete_city(city_id):
 def show_weather():
     """Displays weather cards for the logged-in user's cities."""
     
-    # Get all UserCity objects for the current user
     user_cities = db.session.execute(
         db.select(UserCity).where(UserCity.user_id == current_user.id)
     ).scalars().all()
     
-    # Get just the city_id numbers from those objects
+
     city_codes = [city.city_id for city in user_cities]
 
     weather_cards = []
@@ -346,7 +333,7 @@ def show_weather():
     else:
         for code in city_codes:
             weather_info = get_weather_data(code)
-            if weather_info:  # Only add if data was fetched successfully
+            if weather_info:  
                 weather_cards.append(weather_info)
             else:
                 flash(f"Could not fetch weather data for city code {code}.", "warning")
@@ -371,9 +358,9 @@ if __name__ == "__main__":
     with app.app_context():
         if not os.path.exists(db_path):
             print("Database not found, creating tables...")
-            db.create_all()  # This will create both 'users' and 'user_cities'
+            db.create_all()  
             print("Database and tables created.")
         else:
-            db.create_all()  # Ensures 'user_cities' table is created if DB exists
+            db.create_all()  
             print("Database found. Ensured all tables exist.")
     app.run(debug=True, port=5002)

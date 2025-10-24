@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block styles %}
-    {{ super() }}  {# loads the base styles first #}
+    {{ super() }}  
     <link href="{{ url_for('static', filename='css/weather.css') }}" rel="stylesheet">
 {% endblock %}
 {% block content %}
