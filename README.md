@@ -21,7 +21,6 @@ Before you begin, ensure you have the following installed:
 
 - [Git](https://git-scm.com/)
 - [Python 3.10+](https://www.python.org/)
-- An API Key from [OpenWeatherMap](https://openweathermap.org/api)
 
 ---
 
