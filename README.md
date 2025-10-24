@@ -75,6 +75,7 @@ APP_SECRET="XXXXXXXXXXXX"
 ```
 Note: For a production environment, replace APP_SECRET with a new, securely generated random string.
 
+```
 🔐 Auth0 Setup (Required for Login)
 
 This project uses Auth0 for user authentication.
@@ -115,7 +116,7 @@ AUTH0_CLIENT_SECRET="YOUR_AUTH0_CLIENT_SECRET"
 
 # Example:
 # AUTH0_DOMAIN="dev-xxxxxx.auth0.com"
-
+```
 
 ✅ Make sure to replace the placeholders with values from your Auth0 application settings page.
 
