@@ -97,10 +97,5 @@ Now, open your browser and visit:
 You should see the login page.
 Register a new account and start adding cities to your personal weather dashboard!
 
-🧾 License
-
-This project is open-source and available under the MIT License
-.
-
 Made with ❤️ using Flask
 
