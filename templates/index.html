@@ -1,12 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container text-center mt-5 mb-4 weather-header">
-    <h1 class="app-title">Weather App</h1>
+
+    <div class="d-flex justify-content-center align-items-center">
+        <img src="{{ url_for('static', filename='assets/img/weather_icon.png') }}" alt="Weather Icon"> 
+        <h1 class="app-title mb-0">Weather App</h1>
+    </div>
 
     <form class="d-flex justify-content-center mt-3" method="POST" action="{{ url_for('add_city') }}">
         
         <input class="form-control city-input" type="search" placeholder="Enter a city" aria-label="Enter a city" style="max-width: 300px;" name="city_name">
-        
         <button class="btn btn-primary add-city-btn" type="submit">Add City</button>
     </form>
 </div>
