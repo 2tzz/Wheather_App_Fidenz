@@ -2,6 +2,7 @@
 import os
 import json
 import requests
+from dotenv import load_dotenv
 from datetime import datetime, timezone, timedelta
 from functools import wraps
 from flask import Flask, render_template, redirect, url_for, flash, abort, request
@@ -14,9 +15,14 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from forms import CreateRegForm, CreateLoginForm
 from cachelib import SimpleCache
 
+load_dotenv()
+
+my_seacret = os.getenv('APP_SECRET')
+my_weather_api_key = os.getenv('API_KEY')
+
 # --- App Configuration ---
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
+app.config['SECRET_KEY'] = my_seacret
 Bootstrap5(app)
 
 # --- Caching Setup ---
@@ -24,7 +30,7 @@ cache = SimpleCache()
 CACHE_TIMEOUT = 300  # 5 minutes in seconds
 
 # --- OpenWeatherMap API ---
-API_KEY = "c47cee32692a452f9b5663107eb0878e"  # Your API key
+API_KEY = my_weather_api_key
 WEATHER_URL = "https://api.openweathermap.org/data/2.5/weather"
 
 # --- Flask-Login Configuration ---
