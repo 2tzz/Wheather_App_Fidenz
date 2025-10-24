@@ -36,8 +36,6 @@ First, clone this repository to your local machine.
 ```bash
 git clone [https://github.com/your-username/your-repo-name.git](https://github.com/2tzz/Wheather_App_Fidenz.git)
 
-# Navigate into the project directory
-cd your-repo-name
 ```
 
 2. Create and Activate a Virtual Environment
